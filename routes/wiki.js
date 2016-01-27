@@ -32,8 +32,9 @@ router.post('/', function(req, res, next) {
 router.get('/search', function(req, res, next){
   var query = req.query.query;
   var searchBy = req.query['search-by'];
+
   console.log('search for', query, 'by', searchBy)
-  Page.find({ searchBy: {$elemMatch: { $eq: query } } }).exec().then(function(pages){
+  Page.find({ tags: {$elemMatch: { $eq: query } } }).exec().then(function(pages){
     res.json(pages);
   });
 })
