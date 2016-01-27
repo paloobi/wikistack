@@ -14,7 +14,8 @@ var pageSchema = new Schema({
   content:  {type: String, required: true},
   date:     {type: Date, default: Date.now},
   status:   {type: String, enum: ['open', 'closed']},
-  author:   {type: mongoose.Schema.Types.ObjectId, ref:'User'}
+  author:   {type: mongoose.Schema.Types.ObjectId, ref:'User'},
+  tags:     {type: [String]}
 });
 
 pageSchema.pre('validate', function(next){

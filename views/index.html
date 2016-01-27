@@ -3,7 +3,15 @@
 {% block content %}
   <h3>Pages</h3>
   <hr>
+
+  {% if pages.length > 0 %}
   <ul class="list-unstyled">
-    <!-- PLACEHOLDER LIST OF PAGES -->
+    {% for page in pages %}
+      <li>{{ page | pageLink }} <small>({{page.date|date('n/j/y g:i a')}})</small></li>
+    {% endfor %}
   </ul>
+  {% else %}
+    There are no pages. Why don't you <a href='/wiki/add'>add one</a>?
+  {% endif %}
+
 {% endblock %}

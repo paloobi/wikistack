@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h3>Search</h3>
+  <hr>
+  <form method="GET" action="/wiki/search">
+    
+    <div class="form-group">
+
+      <label for="search-by" class="col-sm-2 control-label">Search By:</label>
+      <select name="search-by">
+        <option value="name" disabled>Author Name</option>
+        <option value="email" disabled>Author Email</option>
+        <option value="title" disabled>Page Title</option>
+        <option value="content" disabled>Content</option>
+        <option value="tags">Tag</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-10">
+        <input name="query" type="text" class="form-control"/>
+      </div>
+    </div>
+
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary">submit</button>
+    </div>
+  
+  </form>
+{% endblock %}

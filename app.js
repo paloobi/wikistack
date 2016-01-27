@@ -2,11 +2,13 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var swig = require('swig');
+require('./filters')(swig);
 
 // import routes
 var router = require('./routes');
 var wikiRouter = require('./routes/wiki');
 var userRouter = require('./routes/user');
+var searchRouter = require('./routes/search');
 
 // instantiate the app
 var app = express();
@@ -33,5 +35,6 @@ app.use(morgan('dev'));
 app.use('/', router);
 app.use('/wiki', wikiRouter);
 app.use('/user', userRouter);
+app.use('/search', searchRouter);
 
 app.listen(3000);
