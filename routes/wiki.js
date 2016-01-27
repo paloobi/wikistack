@@ -30,11 +30,12 @@ router.post('/', function(req, res, next) {
 })
 
 router.get('/search', function(req, res, next){
-  var query = req.params.query;
-  var searchBy = req.params['search-by'];
-  Page.find({
-    searchBy: {$elemMatch: {$in: [query]}}
-  }).exec().then(res.json)
+  var query = req.query.query;
+  var searchBy = req.query['search-by'];
+  console.log('search for', query, 'by', searchBy)
+  Page.find({ searchBy: {$elemMatch: { $eq: query } } }).exec().then(function(pages){
+    res.json(pages);
+  });
 })
 
 router.get('/:urlTitle', function(req, res, next) {
