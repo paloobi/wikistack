@@ -21,11 +21,16 @@ var pageSchema = new Schema({
 pageSchema.pre('validate', function(next){
   this.urlTitle = getUrlTitle(this.title);
   next();
-})
+});
+
+pageSchema.statics.findByTags = function(tags) {
+  return Page.find({ tags: { $in: tags } }).exec();
+}
 
 pageSchema.virtual('route').get(function (){
   return '/wiki/' + this.urlTitle;
 });
+
 
 // define the user Schema
 var userSchema = new Schema({

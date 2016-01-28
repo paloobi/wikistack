@@ -30,12 +30,17 @@ router.post('/', function(req, res, next) {
 })
 
 router.get('/search', function(req, res, next){
-  var query = req.query.query.split(',');
+  var query = req.query.query ? req.query.query.split(',').map(function(val) { return val.trim() }) : null;
   var searchBy = req.query['search-by'];
   console.log('search for', query, 'by', searchBy)
-  Page.find({ tags: { $in: query } }).exec().then(function(pages){
-    res.json(pages);
-  });
+  if (query) {
+    Page.findByTags(query)
+    .then(function(pages){
+      res.render('search', { results: pages });
+    });
+  } else {
+    res.render('search');
+  }
 })
 
 router.get('/:urlTitle', function(req, res, next) {
