@@ -43,10 +43,10 @@ router.get('/search', function(req, res, next){
   }
 })
 
+
 router.get('/:urlTitle', function(req, res, next) {
   var urlTitle = req.params.urlTitle;
   Page.findOne( { urlTitle: urlTitle } ).exec().then(function(page) {
-    console.log(page);
     res.render('wikipage', { page: page });
   }).then(null, next);
 });

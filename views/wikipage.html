@@ -9,16 +9,49 @@
   <div class="page-body">{{page.content}}</div>
   <hr/>
   <div class="tags">
+    <p>Tags:</p>
     {% if page.tags %}
-    Tags:
-    <ul>
-      {% for tag in page.tags %}
-      <li>{{tag}}</li>
-      {% endfor %}
-    </ul>
+      <ul>
+        {% for tag in page.tags %}
+        <li>{{tag|tagLink}}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>This page has no tags!</p>
     {% endif %}
+    <a href="#" class="btn btn-info" id="edit-tags">+</a>
+    <div id="tag-editor" class="row">
+      <form method="GET" action="/wiki/search">
+        <div class="form-group">
+          <div class="col-md-2 col-sm-2">
+            <label for="new-tag" class="control-label">New Tags: <br><small>(comma-separated)</small></label>
+          </div>
+
+          <div class="col-md-3 col-sm-3">
+            <input name="new-tag" type="text" class="form-control"/>
+          </div>
+
+          <div class="col-sm-3 col-md-2">
+            <button type="submit" class="btn btn-primary">Add</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
   </div>
+  <hr>
   <a href="{{page.route}}/edit" class="btn btn-primary">edit this page</a>
   <a href="{{page.route}}/delete" class="btn btn-danger">delete this page</a>
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", function(event) { 
+    document.getElementById('edit-tags').addEventListener('click', function(event) {
+      event.preventDefault();
+      document.getElementById('tag-editor').css.display = 'block';
+    })
+  });
+
+</script>
 
 {% endblock %}

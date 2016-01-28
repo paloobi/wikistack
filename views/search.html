@@ -10,7 +10,7 @@
     <div class="form-group">
 
       <label for="search-by" class="col-sm-1 col-md-1 control-label">Search By:</label>
-      <select name="search-by" class="col-md-3 col.sm-2">
+      <select name="search-by" class="col-md-3 col-sm-2 form-control">
         <option value="name" disabled>Author Name</option>
         <option value="email" disabled>Author Email</option>
         <option value="title" disabled>Page Title</option>
@@ -29,37 +29,42 @@
 
   </form>
 
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">  
+
       {% if results %}
+      <div class="row">
+        <div class="col-md-10">
+
         <h3>Results</h3>
+        <hr>
+
         {% if results.length > 0 %}
           <ul class="list-unstyled">
 
           {% for page in results %}
 
-              <li>{{ page | pageLink }} <br><small>({{page.date|date('n/j/y g:i a')}})</small>
+              <h4>{{ page | pageLink }} <br><small>({{page.date|date('n/j/y g:i a')}})</small></h4>
 
-                <ul>Tags:
+
+              <p>tags: 
                   {% if page.tags.length > 0 %}
-                    {% for tag in page.tags %} {{tag}} {% endfor %}
+                    {% for tag in page.tags %} {{tag|tagLink}} {% endfor %}
                   {% else %}
-                    <p>(This page has no tags)</p>
+                    (This page has no tags)
                   {% endif %}
-                </ul>
+              </p>
 
               </li>
+              <hr>
             {% endfor %}
             </ul>
 
         {% else %}
           <p>Sorry, your search didn't return any results.</p>
         {% endif %}
-
-      {% endif %}
-      </div>
-    <div class="col-md-2"></div>
+    </div>
   </div>
+  
+  {% endif %}
+
 
 {% endblock %}

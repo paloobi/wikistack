@@ -10,3 +10,19 @@ a {
 form.search { 
   margin-bottom: 60px;
 }
+
+select {
+  max-width: 20%; 
+}
+
+#tag-editor {
+  display: none;
+}
+
+.tags {
+  margin-bottom: 40px;
+}
+
+.tags p {
+  margin-top: 10px;
+}
