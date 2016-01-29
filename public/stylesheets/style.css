@@ -26,3 +26,20 @@ select {
 .tags p {
   margin-top: 10px;
 }
+
+#edit-tags {
+  font-size: 22px;
+  font-weight: normal;
+  padding: 2px;
+  width:30px;
+}
+
+textarea[name=content] {
+  height: 400px;
+}
+
+.form-control,
+label[for=status],
+{
+  margin: 10px 0;
+}

@@ -10,7 +10,7 @@ db.on('error', console.error.bind(console, 'mongodb connection error:'));
 // define the page Schema
 var pageSchema = new Schema({
   title:    {type: String, required: true},
-  urlTitle: {type: String, required: true},
+  urlTitle: {type: String, required: true, unique: true},
   content:  {type: String, required: true},
   date:     {type: Date, default: Date.now},
   status:   {type: String, enum: ['open', 'closed']},

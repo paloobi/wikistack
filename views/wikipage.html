@@ -19,16 +19,16 @@
     {% else %}
       <p>This page has no tags!</p>
     {% endif %}
-    <a href="#" class="btn btn-info" id="edit-tags">+</a>
+    <a href="#" class="btn btn-info" id="edit-tags">&#10000;</a>
     <div id="tag-editor" class="row">
-      <form method="GET" action="/wiki/search">
+      <form method="POST" action="/wiki/{{page.urlTitle}}/tags">
         <div class="form-group">
           <div class="col-md-2 col-sm-2">
-            <label for="new-tag" class="control-label">New Tags: <br><small>(comma-separated)</small></label>
+            <label for="tags" class="control-label">New Tags: <br><small>(comma-separated)</small></label>
           </div>
 
           <div class="col-md-3 col-sm-3">
-            <input name="new-tag" type="text" class="form-control"/>
+            <input name="tags" type="text" class="form-control" value="{% if page.tags %}{% for tag in page.tags %} {{tag}}, {% endfor %}{% endif %}"/>
           </div>
 
           <div class="col-sm-3 col-md-2">
@@ -48,8 +48,11 @@
   document.addEventListener("DOMContentLoaded", function(event) { 
     document.getElementById('edit-tags').addEventListener('click', function(event) {
       event.preventDefault();
-      document.getElementById('tag-editor').css.display = 'block';
-    })
+      document.getElementById('tag-editor').style.display = 'block';
+    });
+    document.getElementById('edit-page').addEventListener('click', function(event) {
+      event.preventDefault();
+    });
   });
 
 </script>

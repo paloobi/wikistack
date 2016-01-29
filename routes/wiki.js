@@ -15,22 +15,29 @@ router.get('/add', function(req, res, next) {
 router.post('/', function(req, res, next) {
   var tags = req.body.tags.split(",").map(function(val) { return val.trim(); });
 
-  var page = new Page({
+  var page = {
     title: req.body.title,
     content: req.body.content,
     status: req.body.status,
     tags: tags
-  });
+  };
 
-  page.save()
-  .then(function success(newpage) {
-    console.log('NEW PAGE ADDED:', newpage);
-    res.redirect(page.route);
-  }, console.log)
+  Page.findOne({ title: page.title }).exec().then(function (doc) {
+    doc.title = page.title;
+    doc.content = page.content;
+    doc.status = page.status;
+    doc.tags = page.tags;
+    return doc.save();
+  }, function(err) {
+    return new Page(page);
+  }).then(function(doc){
+    res.redirect(doc.route);
+  }).then(null, console.log);
+
 })
 
 router.get('/search', function(req, res, next){
-  var query = req.query.query ? req.query.query.split(',').map(function(val) { return val.trim() }) : null;
+  var query = req.query.query ? req.query.query.split(',').map(function(val) { return val.trim().replace(',', ''); }) : null;
   var searchBy = req.query['search-by'];
   console.log('search for', query, 'by', searchBy)
   if (query) {
@@ -41,8 +48,25 @@ router.get('/search', function(req, res, next){
   } else {
     res.render('search');
   }
-})
+});
 
+router.post('/:urlTitle/tags', function(req, res, next) {
+  var tags = req.body.tags.split(",").map(function(val) { return val.trim(); });
+  var urlTitle = req.params.urlTitle;
+  Page.findOne({ urlTitle: urlTitle }).then(function(page) {
+    page.tags = tags;
+    page.save().then(function() {
+      res.redirect('/wiki/' + urlTitle);
+    });
+  }).then(null, console.log);
+});
+
+router.get('/:urlTitle/edit', function(req, res, next){
+  var urlTitle = req.params.urlTitle;
+  Page.findOne({urlTitle: urlTitle}).then(function(page){
+    res.render('addpage', {page: page, edit: true});
+  });
+});
 
 router.get('/:urlTitle', function(req, res, next) {
   var urlTitle = req.params.urlTitle;
