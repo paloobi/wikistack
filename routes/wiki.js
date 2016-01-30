@@ -13,6 +13,9 @@ router.get('/add', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
+  var author = req.body.author;
+  var email = req.body.email;
+
   var tags = req.body.tags.split(",").map(function(val) { return val.trim(); });
 
   var page = {
@@ -22,15 +25,31 @@ router.post('/', function(req, res, next) {
     tags: tags
   };
 
-  Page.findOne({ title: page.title }).exec().then(function (doc) {
+  User.findOne({email: email}).exec().then(function (user) {
+    if (user) {
+      page.author = user._id;
+      return user;
+    } else {
+      return User.create({
+        name: name,
+        email: email
+      });
+    }
+  }).then(function (user) {
+    page.author = user._id;
+    return Page.findOne({ title: page.title }).exec();
+  }).then(function (doc) {
     doc.title = page.title;
     doc.content = page.content;
     doc.status = page.status;
     doc.tags = page.tags;
+    doc.author = page.author;
+    doc.email = page.email;
     return doc.save();
   }, function(err) {
-    return new Page(page);
-  }).then(function(doc){
+    var doc = new Page(page);
+    return doc.save();
+  }).then(function (doc) {
     res.redirect(doc.route);
   }).then(null, console.log);
 
@@ -70,7 +89,7 @@ router.get('/:urlTitle/edit', function(req, res, next){
 
 router.get('/:urlTitle', function(req, res, next) {
   var urlTitle = req.params.urlTitle;
-  Page.findOne( { urlTitle: urlTitle } ).exec().then(function(page) {
+  Page.findOne( { urlTitle: urlTitle } ).populate('author').exec().then(function(page) {
     res.render('wikipage', { page: page });
   }).then(null, next);
 });
